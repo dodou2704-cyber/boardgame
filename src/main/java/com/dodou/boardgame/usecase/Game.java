@@ -8,6 +8,10 @@ import com.dodou.boardgame.domain.rules.EndRule;
 import com.dodou.boardgame.infrastructure.rules.ExactEndRule;
 import com.dodou.boardgame.domain.rules.HitRule;
 import com.dodou.boardgame.infrastructure.rules.NoMoveOnHitRule;
+import com.dodou.boardgame.domain.model.Wormhole;
+import com.dodou.boardgame.domain.rules.WormholeRule;
+import com.dodou.boardgame.infrastructure.rules.SimpleWormholeRule;
+import java.util.List;
 
 public class Game {
 
@@ -25,6 +29,15 @@ public class Game {
         DiceShaker diceShaker = new DoubleDiceShaker();
         EndRule endRule  = new ExactEndRule();
         HitRule hitRule = new NoMoveOnHitRule();
+
+        WormholeRule wormholeRule = new SimpleWormholeRule();
+
+        List<Wormhole> wormholes = List.of(
+                new Wormhole(4, 9),
+                new Wormhole(19, 23)
+        );
+
+
 
         while (true) {
 
@@ -48,11 +61,23 @@ public class Game {
                     )
             );
 
-            System.out.println(red.getName() +
-                    " rolls " + redRoll);
+            System.out.println(red.getName() + " rolls " + redRoll);
+            System.out.println(red.getName() + " moves to " + red.getPosition());
 
-            System.out.println(red.getName() +
-                    " moves to " + red.getPosition());
+            int redBeforeWormhole = red.getPosition();
+
+            red.setPosition(
+                    wormholeRule.resolveWormhole(
+                            red.getPosition(),
+                            wormholes
+                    )
+            );
+
+            if (red.getPosition() != redBeforeWormhole) {
+                System.out.println(red.getName()
+                        + " used a wormhole to "
+                        + red.getPosition());
+            }
 
             if (red.getPosition() >= board.getSize()) {
                 System.out.println(red.getName() + " wins in " + redTurns + " turns.");
@@ -80,11 +105,23 @@ public class Game {
                     )
             );
 
-            System.out.println(blue.getName() +
-                    " rolls " + blueRoll);
+            System.out.println(blue.getName() + " rolls " + blueRoll);
+            System.out.println(blue.getName() + " moves to " + blue.getPosition());
 
-            System.out.println(blue.getName() +
-                    " moves to " + blue.getPosition());
+            int blueBeforeWormhole = blue.getPosition();
+
+            blue.setPosition(
+                    wormholeRule.resolveWormhole(
+                            blue.getPosition(),
+                            wormholes
+                    )
+            );
+
+            if (blue.getPosition() != blueBeforeWormhole) {
+                System.out.println(blue.getName()
+                        + " used a wormhole to "
+                        + blue.getPosition());
+            }
 
             if (blue.getPosition() <= 1) {
                 System.out.println(blue.getName() + " wins in " + blueTurns + " turns.");
