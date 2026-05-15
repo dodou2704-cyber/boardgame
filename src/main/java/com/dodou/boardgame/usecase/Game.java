@@ -6,7 +6,8 @@ import com.dodou.boardgame.domain.rules.DiceShaker;
 import com.dodou.boardgame.infrastructure.dice.DoubleDiceShaker;
 import com.dodou.boardgame.domain.rules.EndRule;
 import com.dodou.boardgame.infrastructure.rules.ExactEndRule;
-
+import com.dodou.boardgame.domain.rules.HitRule;
+import com.dodou.boardgame.infrastructure.rules.NoMoveOnHitRule;
 
 public class Game {
 
@@ -23,18 +24,27 @@ public class Game {
 
         DiceShaker diceShaker = new DoubleDiceShaker();
         EndRule endRule  = new ExactEndRule();
+        HitRule hitRule = new NoMoveOnHitRule();
 
         while (true) {
 
             int redRoll = diceShaker.roll();
             redTurns++;
             totalTurns++;
-            red.setPosition(
+            int redNewPosition =
                     endRule.calculatePosition(
                             red.getPosition(),
                             redRoll,
                             board.getSize(),
                             true
+                    );
+
+            red.setPosition(
+                    hitRule.resolveHit(
+                            red,
+                            blue,
+                            red.getPosition(),
+                            redNewPosition
                     )
             );
 
@@ -53,12 +63,20 @@ public class Game {
             int blueRoll = diceShaker.roll();
             blueTurns++;
             totalTurns++;
-            blue.setPosition(
+            int blueNewPosition =
                     endRule.calculatePosition(
                             blue.getPosition(),
                             blueRoll,
                             board.getSize(),
                             false
+                    );
+
+            blue.setPosition(
+                    hitRule.resolveHit(
+                            blue,
+                            red,
+                            blue.getPosition(),
+                            blueNewPosition
                     )
             );
 
