@@ -52,11 +52,11 @@ public class Game {
         System.out.println("End Rule: Exact End");
         System.out.println("Hit Rule: No Move On Hit");
         System.out.println("Teleport Rule: Wormholes enabled");
-        System.out.println("Wormholes: 4 <-> 9, 19 <-> 23");
+        System.out.println("Wormholes: none");
         System.out.println();
 
 
-        while (true) {
+        while (totalTurns < 200) {
 
             for (Player player : players) {
 
@@ -82,6 +82,9 @@ public class Game {
 
             }
         }
+
+        System.out.println("Game ended after reaching turn limit.");
+
     }
 
 
@@ -110,7 +113,8 @@ public class Game {
         int newIndex = currentIndex + roll;
 
         if (newIndex >= positions.size()) {
-            return player.getPosition();
+            int overflow = newIndex - (positions.size() - 1);
+            newIndex = (positions.size() - 1) - overflow;
         }
 
         return positions.get(newIndex);
@@ -132,11 +136,9 @@ public class Game {
         turnCounts.put(player, turnCounts.get(player) + 1);
 
         int newPosition =
-                endRule.calculatePosition(
-                        player.getPosition(),
-                        roll,
-                        board.getSize(),
-                        player.isMovingForward()
+                calculatePathPosition(
+                        player,
+                        roll
                 );
         Player otherPlayer = findOtherPlayer(player, players);
 
@@ -192,7 +194,8 @@ public class Game {
 
         PlayerPath redPath = new PlayerPath(List.of(
                 1, 2, 3, 4, 5, 6,
-                12, 18, 24, 30, 36
+                12, 18, 24, 30, 36,
+                35, 34, 33, 32, 31
         ));
 
         PlayerPath bluePath = new PlayerPath(List.of(
