@@ -22,10 +22,10 @@ public class Game {
 
         Board board = new Board(25);
 
-        Player red = new Player("Red", 1, 25);
-        Player blue = new Player("Blue", 25, 1);
-        Player green = new Player("Green", 1, 25);
-        Player yellow = new Player("Yellow", 25, 1);
+        Player red = new Player("Red", 1, 25, true);
+        Player blue = new Player("Blue", 25, 1, false);
+        Player green = new Player("Green", 1, 25, true);
+        Player yellow = new Player("Yellow", 25, 1, false);
         List<Player> players = List.of(
                 red,
                 blue,
@@ -66,6 +66,31 @@ public class Game {
 
 
         while (true) {
+
+            for (Player player : players) {
+
+                boolean gameWon = takeTurn(
+                        player,
+                        players,
+                        diceShaker,
+                        endRule,
+                        hitRule,
+                        wormholeRule,
+                        wormholes,
+                        turnCounts,
+                        board,
+                        totalTurns
+                );
+
+                totalTurns++;
+
+                if (gameWon) {
+                    System.out.println("Total turns: " + totalTurns);
+                    return;
+                }
+
+            }
+
 
             int redRoll = diceShaker.roll();
             turnCounts.put(red, turnCounts.get(red) + 1);
@@ -173,7 +198,98 @@ public class Game {
         return null;
     }
 
+    private boolean takeTurn(Player player,
+                             List<Player> players,
+                             DiceShaker diceShaker,
+                             EndRule endRule,
+                             HitRule hitRule,
+                             WormholeRule wormholeRule,
+                             List<Wormhole> wormholes,
+                             Map<Player, Integer> turnCounts,
+                             Board board,
+                             int totalTurns) {
+
+        int roll = diceShaker.roll();
+
+        turnCounts.put(player, turnCounts.get(player) + 1);
+
+        int newPosition =
+                endRule.calculatePosition(
+                        player.getPosition(),
+                        roll,
+                        board.getSize(),
+                        player.isMovingForward()
+                );
+        Player otherPlayer = findOtherPlayer(player, players);
+
+        if (otherPlayer != null) {
+            player.setPosition(
+                    hitRule.resolveHit(
+                            player,
+                            otherPlayer,
+                            player.getPosition(),
+                            newPosition
+
+                    )
+            );
+
+
+        } else {
+            player.setPosition(newPosition);
+        }
+        System.out.println(player.getName() + " rolls " + roll);
+        System.out.println(player.getName() + " moves to " + player.getPosition());
+        System.out.println(player.getName() + " turn count: " + turnCounts.get(player));
+
+        int beforeWormhole = player.getPosition();
+
+        player.setPosition(
+                wormholeRule.resolveWormhole(
+                        player.getPosition(),
+                        wormholes
+                )
+        );
+
+        if (player.getPosition() != beforeWormhole) {
+
+            System.out.println(player.getName()
+                    + " used a wormhole to "
+                    + player.getPosition());
+        }
+
+        if (player.getPosition() == player.getEndPosition()) {
+
+            System.out.println(player.getName()
+                    + " wins in "
+                    + turnCounts.get(player)
+                    + " turns.");
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private List<Player> createPlayers() {
+
+        Player red = new Player("Red", 1, 25, true);
+        Player blue = new Player("Blue", 25, 1, false);
+        Player green = new Player("Green", 1, 25, true);
+        Player yellow = new Player("Yellow", 25, 1, false);
+
+        return List.of(
+                red,
+                blue,
+                green,
+                yellow
+        );
+    }
 }
+
+
+
+
+
 
 
 
