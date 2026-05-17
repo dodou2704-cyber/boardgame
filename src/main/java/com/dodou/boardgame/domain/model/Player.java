@@ -7,17 +7,20 @@ public class Player {
     private int homePosition;
     private int endPosition;
     private boolean movingForward;
+    private PlayerPath path;
 
     public Player(String name,
                   int homePosition,
                   int endPosition,
-                  boolean movingForward) {
+                  boolean movingForward,
+                  PlayerPath path) {
 
         this.name = name;
         this.homePosition = homePosition;
         this.endPosition = endPosition;
         this.position = homePosition;
         this.movingForward = movingForward;
+        this.path = path;
     }
 
     public String getName() {
@@ -38,6 +41,10 @@ public class Player {
 
     public boolean isMovingForward() {
         return movingForward;
+    }
+
+    public PlayerPath getPath() {
+        return path;
     }
 
     public void setPosition(int position) {
