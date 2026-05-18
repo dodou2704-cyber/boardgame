@@ -17,6 +17,7 @@ import com.dodou.boardgame.domain.rules.WormholeRule;
 import com.dodou.boardgame.infrastructure.rules.SimpleWormholeRule;
 import com.dodou.boardgame.infrastructure.dice.FixedDiceShaker;
 import com.dodou.boardgame.domain.model.PlayerPath;
+import com.dodou.boardgame.infrastructure.rules.PathMovementRule;
 public class Game {
 
     public void play() {
@@ -38,8 +39,8 @@ public class Game {
                 new FixedDiceShaker(12, 6, 6, 12, 5, 6);
         EndRule endRule = new ExactEndRule();
         HitRule hitRule = new NoMoveOnHitRule();
-
         WormholeRule wormholeRule = new SimpleWormholeRule();
+        PathMovementRule pathMovementRule = new PathMovementRule();
 
         List<Wormhole> wormholes = List.of(
 
@@ -67,6 +68,7 @@ public class Game {
                         endRule,
                         hitRule,
                         wormholeRule,
+                        pathMovementRule,
                         wormholes,
                         turnCounts,
                         board,
@@ -102,30 +104,13 @@ public class Game {
         return null;
     }
 
-    private int calculatePathPosition(Player player, int roll) {
-
-        List<Integer> positions =
-                player.getPath().getPositions();
-
-        int currentIndex =
-                positions.indexOf(player.getPosition());
-
-        int newIndex = currentIndex + roll;
-
-        if (newIndex >= positions.size()) {
-            int overflow = newIndex - (positions.size() - 1);
-            newIndex = (positions.size() - 1) - overflow;
-        }
-
-        return positions.get(newIndex);
-    }
-
     private boolean takeTurn(Player player,
                              List<Player> players,
                              DiceShaker diceShaker,
                              EndRule endRule,
                              HitRule hitRule,
                              WormholeRule wormholeRule,
+                             PathMovementRule pathMovementRule,
                              List<Wormhole> wormholes,
                              Map<Player, Integer> turnCounts,
                              Board board,
@@ -136,7 +121,7 @@ public class Game {
         turnCounts.put(player, turnCounts.get(player) + 1);
 
         int newPosition =
-                calculatePathPosition(
+                pathMovementRule.calculatePathPosition(
                         player,
                         roll
                 );
