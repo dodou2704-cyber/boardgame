@@ -73,8 +73,8 @@ Landing on Snakes moves player downwards
 
 The game displays player turns, dice rolls, snakes, ladders, and win conditions.
 
-![Gameplay](images/boardgameimage1.png)
-![Gameplay](images/boardgameimage2.png)
+ ![Gameplay](images/gameplay1.png)
+ ![Gameplay](images/gameplay2.png)
 
 
 ---
@@ -90,7 +90,7 @@ The project includes automated JUnit tests for:
 
 The project includes automated JUnit tests for game rules and movement logic.
 
-![Tests](images/test.png)
+ ![Tests](images/tests.png)
 
 
 
