@@ -2,12 +2,12 @@ package com.dodou.boardgame.domain.model;
 
 public class Player {
 
-    private String name;
+    private final String name;
     private int position;
-    private int homePosition;
-    private int endPosition;
-    private boolean movingForward;
-    private PlayerPath path;
+    private final int homePosition;
+    private final int endPosition;
+    private final boolean movingForward;
+    private final PlayerPath path;
 
     public Player(String name,
                   int homePosition,

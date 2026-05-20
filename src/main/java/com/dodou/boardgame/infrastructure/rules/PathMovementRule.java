@@ -9,7 +9,7 @@ public class PathMovementRule {
     public int calculatePathPosition(Player player, int roll) {
 
         List<Integer> positions =
-                player.getPath().getPositions();
+                player.getPath().positions();
 
         int currentIndex =
                 positions.indexOf(player.getPosition());

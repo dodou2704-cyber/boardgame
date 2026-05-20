@@ -1,22 +1,24 @@
 package com.dodou.boardgame.usecase;
 
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 import com.dodou.boardgame.domain.model.Board;
 import com.dodou.boardgame.domain.model.Player;
+import com.dodou.boardgame.domain.model.PlayerPath;
+import com.dodou.boardgame.domain.model.SnakeOrLadder;
 import com.dodou.boardgame.domain.rules.DiceShaker;
 import com.dodou.boardgame.domain.rules.EndRule;
-import com.dodou.boardgame.infrastructure.rules.ExactEndRule;
 import com.dodou.boardgame.domain.rules.HitRule;
-import com.dodou.boardgame.infrastructure.rules.NoMoveOnHitRule;
-import com.dodou.boardgame.domain.model.SnakeOrLadder;
 import com.dodou.boardgame.domain.rules.SnakeOrLadderRule;
-import com.dodou.boardgame.infrastructure.rules.SimpleSnakeOrLadderRule;
 import com.dodou.boardgame.infrastructure.dice.FixedDiceShaker;
-import com.dodou.boardgame.domain.model.PlayerPath;
+import com.dodou.boardgame.infrastructure.rules.ExactEndRule;
+import com.dodou.boardgame.infrastructure.rules.NoMoveOnHitRule;
 import com.dodou.boardgame.infrastructure.rules.PathMovementRule;
+import com.dodou.boardgame.infrastructure.rules.SimpleSnakeOrLadderRule;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Game {
 
     public void play() {

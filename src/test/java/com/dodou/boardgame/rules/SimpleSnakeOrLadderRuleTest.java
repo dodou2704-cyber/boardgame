@@ -45,6 +45,7 @@ class SimpleSnakeOrLadderRuleTest {
 
         assertEquals(7, result);
     }
+
     @Test
     void playerSlidesDownSnake() {
 

@@ -68,6 +68,15 @@ If player lands on another player, movement is blocked
 Landing on Ladder moves player upwards
 Landing on Snakes moves player downwards
 
+
+## Gameplay Example
+
+The game displays player turns, dice rolls, snakes, ladders, and win conditions.
+
+![Gameplay](images/boardgameimage1.png)
+![Gameplay](images/boardgameimage2.png)
+
+
 ---
 ## Testing
 
@@ -76,6 +85,14 @@ The project includes automated JUnit tests for:
 - Hit rule
 - Path movement
 - Snakes and ladders
+
+## Test Results
+
+The project includes automated JUnit tests for game rules and movement logic.
+
+![Tests](images/test.png)
+
+
 
 ---
 

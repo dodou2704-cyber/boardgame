@@ -1,6 +1,7 @@
 package com.dodou.boardgame.infrastructure.dice;
 
 import com.dodou.boardgame.domain.rules.DiceShaker;
+
 import java.util.Random;
 
 public class SingleDiceShaker implements DiceShaker {

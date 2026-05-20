@@ -13,20 +13,19 @@ public class SimpleSnakeOrLadderRule implements SnakeOrLadderRule {
 
         for (SnakeOrLadder wormhole : wormholes) {
 
-            if (position == wormhole.getFirstPosition()) {
-                return wormhole.getSecondPosition();
+            if (position == wormhole.firstPosition()) {
+                return wormhole.secondPosition();
 
             }
 
-            if (position == wormhole.getSecondPosition()) {
-                return wormhole.getFirstPosition();
+            if (position == wormhole.secondPosition()) {
+                return wormhole.firstPosition();
             }
         }
 
 
-            return position;
-        }
-
+        return position;
+    }
 
 
 }
