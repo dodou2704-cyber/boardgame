@@ -45,4 +45,21 @@ class SimpleSnakeOrLadderRuleTest {
 
         assertEquals(7, result);
     }
+    @Test
+    void playerSlidesDownSnake() {
+
+        SnakeOrLadder snake =
+                new SnakeOrLadder(35, 18);
+
+        SimpleSnakeOrLadderRule rule =
+                new SimpleSnakeOrLadderRule();
+
+        int result =
+                rule.resolveSnakeOrLadder(
+                        35,
+                        List.of(snake)
+                );
+
+        assertEquals(18, result);
+    }
 }

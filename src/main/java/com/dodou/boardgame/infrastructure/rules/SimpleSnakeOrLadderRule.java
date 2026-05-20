@@ -23,8 +23,10 @@ public class SimpleSnakeOrLadderRule implements SnakeOrLadderRule {
             }
         }
 
+
             return position;
         }
+
 
 
 }
