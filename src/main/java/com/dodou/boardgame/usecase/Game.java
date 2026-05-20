@@ -41,9 +41,13 @@ public class Game {
         SnakeOrLadderRule SnakeOrLadderRule = new SimpleSnakeOrLadderRule();
         PathMovementRule pathMovementRule = new PathMovementRule();
 
-        List<SnakeOrLadder> SnakeOrLadders = List.of(
-
+        List<SnakeOrLadder> snakesAndLadders = List.of(
+                new SnakeOrLadder(3, 12),
+                new SnakeOrLadder(5, 6),
+                new SnakeOrLadder(35, 18),
+                new SnakeOrLadder(34, 12)
         );
+
 
         System.out.println("Game");
         System.out.println("Board: rows=6 columns=6");
@@ -52,7 +56,8 @@ public class Game {
         System.out.println("End Rule: Exact End");
         System.out.println("Hit Rule: No Move On Hit");
         System.out.println("Special Tiles: Snakes and Ladders enabled");
-        System.out.println("Snakes and Ladders: none");
+        System.out.println("Ladders: 3 -> 12, 5 -> 6");
+        System.out.println("Snakes: 35 -> 18, 34 -> 12");
         System.out.println();
 
 
@@ -68,7 +73,7 @@ public class Game {
                         hitRule,
                         SnakeOrLadderRule,
                         pathMovementRule,
-                        SnakeOrLadders,
+                        snakesAndLadders,
                         turnCounts,
                         board,
                         totalTurns
@@ -142,8 +147,20 @@ public class Game {
             player.setPosition(newPosition);
         }
         System.out.println(player.getName() + " rolls " + roll);
-        System.out.println(player.getName() + " moves to " + player.getPosition());
-        System.out.println(player.getName() + " turn count: " + turnCounts.get(player));
+
+        int landedPosition = player.getPosition();
+
+        System.out.println(
+                player.getName()
+                        + " landed on "
+                        + landedPosition
+        );
+
+        System.out.println(
+                player.getName()
+                        + " turn count: "
+                        + turnCounts.get(player)
+        );
 
         int beforeMove = player.getPosition();
 
@@ -157,11 +174,19 @@ public class Game {
 
         if (player.getPosition() != beforeMove) {
 
-            System.out.println(
-                    player.getName()
-                            + " used a snake or ladder to "
-                            + player.getPosition()
-            );
+            if (player.getPosition() > beforeMove) {
+                System.out.println(
+                        player.getName()
+                                + " climbed a ladder to "
+                                + player.getPosition()
+                );
+            } else {
+                System.out.println(
+                        player.getName()
+                                + " slid down a snake to "
+                                + player.getPosition()
+                );
+            }
         }
 
         if (player.getPosition() == player.getEndPosition()) {
