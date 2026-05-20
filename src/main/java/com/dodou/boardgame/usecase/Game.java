@@ -7,14 +7,13 @@ import java.util.HashMap;
 import com.dodou.boardgame.domain.model.Board;
 import com.dodou.boardgame.domain.model.Player;
 import com.dodou.boardgame.domain.rules.DiceShaker;
-import com.dodou.boardgame.infrastructure.dice.DoubleDiceShaker;
 import com.dodou.boardgame.domain.rules.EndRule;
 import com.dodou.boardgame.infrastructure.rules.ExactEndRule;
 import com.dodou.boardgame.domain.rules.HitRule;
 import com.dodou.boardgame.infrastructure.rules.NoMoveOnHitRule;
-import com.dodou.boardgame.domain.model.Wormhole;
-import com.dodou.boardgame.domain.rules.WormholeRule;
-import com.dodou.boardgame.infrastructure.rules.SimpleWormholeRule;
+import com.dodou.boardgame.domain.model.SnakeOrLadder;
+import com.dodou.boardgame.domain.rules.SnakeOrLadderRule;
+import com.dodou.boardgame.infrastructure.rules.SimpleSnakeOrLadderRule;
 import com.dodou.boardgame.infrastructure.dice.FixedDiceShaker;
 import com.dodou.boardgame.domain.model.PlayerPath;
 import com.dodou.boardgame.infrastructure.rules.PathMovementRule;
@@ -39,10 +38,10 @@ public class Game {
                 new FixedDiceShaker(12, 6, 6, 12, 5, 6);
         EndRule endRule = new ExactEndRule();
         HitRule hitRule = new NoMoveOnHitRule();
-        WormholeRule wormholeRule = new SimpleWormholeRule();
+        SnakeOrLadderRule SnakeOrLadderRule = new SimpleSnakeOrLadderRule();
         PathMovementRule pathMovementRule = new PathMovementRule();
 
-        List<Wormhole> wormholes = List.of(
+        List<SnakeOrLadder> SnakeOrLadders = List.of(
 
         );
 
@@ -52,8 +51,8 @@ public class Game {
         System.out.println("Dice: Two 6-sided dice");
         System.out.println("End Rule: Exact End");
         System.out.println("Hit Rule: No Move On Hit");
-        System.out.println("Teleport Rule: Wormholes enabled");
-        System.out.println("Wormholes: none");
+        System.out.println("Special Tiles: Snakes and Ladders enabled");
+        System.out.println("Snakes and Ladders: none");
         System.out.println();
 
 
@@ -67,9 +66,9 @@ public class Game {
                         diceShaker,
                         endRule,
                         hitRule,
-                        wormholeRule,
+                        SnakeOrLadderRule,
                         pathMovementRule,
-                        wormholes,
+                        SnakeOrLadders,
                         turnCounts,
                         board,
                         totalTurns
@@ -109,9 +108,9 @@ public class Game {
                              DiceShaker diceShaker,
                              EndRule endRule,
                              HitRule hitRule,
-                             WormholeRule wormholeRule,
+                             SnakeOrLadderRule snakeOrLadderRule,
                              PathMovementRule pathMovementRule,
-                             List<Wormhole> wormholes,
+                             List<SnakeOrLadder> snakesAndLadders,
                              Map<Player, Integer> turnCounts,
                              Board board,
                              int totalTurns) {
@@ -146,20 +145,23 @@ public class Game {
         System.out.println(player.getName() + " moves to " + player.getPosition());
         System.out.println(player.getName() + " turn count: " + turnCounts.get(player));
 
-        int beforeWormhole = player.getPosition();
+        int beforeMove = player.getPosition();
 
         player.setPosition(
-                wormholeRule.resolveWormhole(
+                snakeOrLadderRule.resolveSnakeOrLadder(
                         player.getPosition(),
-                        wormholes
+                        snakesAndLadders
                 )
         );
 
-        if (player.getPosition() != beforeWormhole) {
 
-            System.out.println(player.getName()
-                    + " used a wormhole to "
-                    + player.getPosition());
+        if (player.getPosition() != beforeMove) {
+
+            System.out.println(
+                    player.getName()
+                            + " used a snake or ladder to "
+                            + player.getPosition()
+            );
         }
 
         if (player.getPosition() == player.getEndPosition()) {
