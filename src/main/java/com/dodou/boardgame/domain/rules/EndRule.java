@@ -1,10 +1,8 @@
 package com.dodou.boardgame.domain.rules;
 
+import com.dodou.boardgame.domain.model.Player;
+
 public interface EndRule {
 
-    int calculatePosition(int currentPosition,
-                          int roll,
-                          int boardSize,
-                          boolean movingForward);
-
+    int calculatePosition(Player player, int roll);
 }

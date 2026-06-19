@@ -1,38 +1,32 @@
 package com.dodou.boardgame.infrastructure.rules;
 
+import com.dodou.boardgame.domain.model.Player;
 import com.dodou.boardgame.domain.rules.EndRule;
+
+import java.util.List;
 
 public class ExactEndRule implements EndRule {
 
     @Override
-    public int calculatePosition(int currentPosition,
-                                 int roll,
-                                 int boardSize,
-                                 boolean movingForward) {
+    public int calculatePosition(Player player, int roll) {
 
-        int newPosition;
+        List<Integer> positions =
+                player.getPath().positions();
 
-        if (movingForward) {
+        int currentIndex =
+                positions.indexOf(player.getPosition());
 
-            newPosition = currentPosition + roll;
+        int newIndex =
+                currentIndex + roll;
 
-            if (newPosition > boardSize) {
+        if (newIndex >= positions.size()) {
+            int overflow =
+                    newIndex - (positions.size() - 1);
 
-                int overflow = newPosition - boardSize;
-                newPosition = boardSize - overflow;
-            }
-
-        } else {
-
-            newPosition = currentPosition - roll;
-
-            if (newPosition < 1) {
-
-                int overflow = 1 - newPosition;
-                newPosition = 1 + overflow;
-            }
+            newIndex =
+                    (positions.size() - 1) - overflow;
         }
 
-        return newPosition;
+        return positions.get(newIndex);
     }
 }

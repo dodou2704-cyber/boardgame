@@ -14,6 +14,7 @@ import com.dodou.boardgame.infrastructure.rules.ExactEndRule;
 import com.dodou.boardgame.infrastructure.rules.NoMoveOnHitRule;
 import com.dodou.boardgame.infrastructure.rules.PathMovementRule;
 import com.dodou.boardgame.infrastructure.rules.SimpleWormholeRule;
+import com.dodou.boardgame.infrastructure.rules.SimpleEndRule;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public class Game {
 
         DiceShaker diceShaker =
                 new FixedDiceShaker(12, 6, 6, 12, 5, 6);
-        EndRule endRule = new ExactEndRule();
+        EndRule endRule = new SimpleEndRule();
         HitRule hitRule = new NoMoveOnHitRule();
         WormholeRule wormholeRule = new SimpleWormholeRule();
         PathMovementRule pathMovementRule = new PathMovementRule();
@@ -49,7 +50,7 @@ public class Game {
         System.out.println("Board: rows=5 columns=5");
         System.out.println("Players: Red and Blue");
         System.out.println("Dice: Two 6-sided dice");
-        System.out.println("End Rule: Exact End");
+        System.out.println("End Rule: Basic End");
         System.out.println("Hit Rule: No Move On Hit");
         System.out.println("Teleport Rule: Wormholes ignored");
         System.out.println("Wormholes: none");
@@ -120,7 +121,7 @@ public class Game {
         turnCounts.put(player, turnCounts.get(player) + 1);
 
         int newPosition =
-                pathMovementRule.calculatePathPosition(
+                endRule.calculatePosition(
                         player,
                         roll
                 );

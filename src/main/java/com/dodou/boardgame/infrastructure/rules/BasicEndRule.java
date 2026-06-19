@@ -1,14 +1,12 @@
 package com.dodou.boardgame.infrastructure.rules;
 
 import com.dodou.boardgame.domain.model.Player;
-import com.dodou.boardgame.domain.rules.EndRule;
 
 import java.util.List;
 
-public class SimpleEndRule implements EndRule {
+public class BasicEndRule {
 
-    @Override
-    public int calculatePosition(Player player, int roll) {
+    public int calculatePathPosition(Player player, int roll) {
 
         List<Integer> positions =
                 player.getPath().positions();
@@ -16,8 +14,7 @@ public class SimpleEndRule implements EndRule {
         int currentIndex =
                 positions.indexOf(player.getPosition());
 
-        int newIndex =
-                currentIndex + roll;
+        int newIndex = currentIndex + roll;
 
         if (newIndex >= positions.size()) {
             return player.getEndPosition();
