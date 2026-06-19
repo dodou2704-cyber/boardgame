@@ -4,16 +4,16 @@ package com.dodou.boardgame.usecase;
 import com.dodou.boardgame.domain.model.Board;
 import com.dodou.boardgame.domain.model.Player;
 import com.dodou.boardgame.domain.model.PlayerPath;
-import com.dodou.boardgame.domain.model.SnakeOrLadder;
+import com.dodou.boardgame.domain.model.Wormhole;
 import com.dodou.boardgame.domain.rules.DiceShaker;
 import com.dodou.boardgame.domain.rules.EndRule;
 import com.dodou.boardgame.domain.rules.HitRule;
-import com.dodou.boardgame.domain.rules.SnakeOrLadderRule;
+import com.dodou.boardgame.domain.rules.WormholeRule;
 import com.dodou.boardgame.infrastructure.dice.FixedDiceShaker;
 import com.dodou.boardgame.infrastructure.rules.ExactEndRule;
 import com.dodou.boardgame.infrastructure.rules.NoMoveOnHitRule;
 import com.dodou.boardgame.infrastructure.rules.PathMovementRule;
-import com.dodou.boardgame.infrastructure.rules.SimpleSnakeOrLadderRule;
+import com.dodou.boardgame.infrastructure.rules.SimpleWormholeRule;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +23,9 @@ public class Game {
 
     public void play() {
 
-        Board board = new Board(36);
+        Board board = new Board(25);
 
-        List<Player> players = createPlayers();
+        List<Player> players = createSmallBoardPlayers();
 
         Map<Player, Integer> turnCounts = new HashMap<>();
 
@@ -40,26 +40,19 @@ public class Game {
                 new FixedDiceShaker(12, 6, 6, 12, 5, 6);
         EndRule endRule = new ExactEndRule();
         HitRule hitRule = new NoMoveOnHitRule();
-        SnakeOrLadderRule SnakeOrLadderRule = new SimpleSnakeOrLadderRule();
+        WormholeRule wormholeRule = new SimpleWormholeRule();
         PathMovementRule pathMovementRule = new PathMovementRule();
 
-        List<SnakeOrLadder> snakesAndLadders = List.of(
-                new SnakeOrLadder(3, 12),
-                new SnakeOrLadder(5, 6),
-                new SnakeOrLadder(35, 18),
-                new SnakeOrLadder(34, 12)
-        );
-
+        List<Wormhole> wormholes = List.of();
 
         System.out.println("Game");
-        System.out.println("Board: rows=6 columns=6");
-        System.out.println("Players: Red, Blue, Green and Yellow");
+        System.out.println("Board: rows=5 columns=5");
+        System.out.println("Players: Red and Blue");
         System.out.println("Dice: Two 6-sided dice");
         System.out.println("End Rule: Exact End");
         System.out.println("Hit Rule: No Move On Hit");
-        System.out.println("Special Tiles: Snakes and Ladders enabled");
-        System.out.println("Ladders: 3 -> 12, 5 -> 6");
-        System.out.println("Snakes: 35 -> 18, 34 -> 12");
+        System.out.println("Teleport Rule: Wormholes ignored");
+        System.out.println("Wormholes: none");
         System.out.println();
 
 
@@ -73,9 +66,9 @@ public class Game {
                         diceShaker,
                         endRule,
                         hitRule,
-                        SnakeOrLadderRule,
+                        wormholeRule,
                         pathMovementRule,
-                        snakesAndLadders,
+                        wormholes,
                         turnCounts,
                         board,
                         totalTurns
@@ -115,9 +108,9 @@ public class Game {
                              DiceShaker diceShaker,
                              EndRule endRule,
                              HitRule hitRule,
-                             SnakeOrLadderRule snakeOrLadderRule,
+                             WormholeRule WormholeRule,
                              PathMovementRule pathMovementRule,
-                             List<SnakeOrLadder> snakesAndLadders,
+                             List<Wormhole> wormholes,
                              Map<Player, Integer> turnCounts,
                              Board board,
                              int totalTurns) {
@@ -167,9 +160,9 @@ public class Game {
         int beforeMove = player.getPosition();
 
         player.setPosition(
-                snakeOrLadderRule.resolveSnakeOrLadder(
+                WormholeRule.resolveWormhole(
                         player.getPosition(),
-                        snakesAndLadders
+                        wormholes
                 )
         );
 
@@ -204,7 +197,7 @@ public class Game {
         return false;
     }
 
-    private List<Player> createPlayers() {
+    private List<Player> createLargeBoardPlayers() {
 
         PlayerPath redPath = new PlayerPath(List.of(
                 1, 2, 3, 4, 5, 6,
@@ -266,6 +259,52 @@ public class Game {
                 yellow
         );
     }
+
+    private List<Player> createSmallBoardPlayers() {
+
+        PlayerPath redPath =
+                new PlayerPath(List.of(
+                        1, 2, 3, 4, 5,
+                        6, 7, 8, 9, 10,
+                        11, 12, 13, 14, 15,
+                        16, 17, 18, 19, 20,
+                        21, 22, 23, 24, 25
+                ));
+
+        PlayerPath bluePath =
+                new PlayerPath(List.of(
+                        25, 24, 23, 22, 21,
+                        20, 19, 18, 17, 16,
+                        15, 14, 13, 12, 11,
+                        10, 9, 8, 7, 6,
+                        5, 4, 3, 2, 1
+                ));
+
+        Player red =
+                new Player(
+                        "Red",
+                        1,
+                        25,
+                        true,
+                        redPath
+                );
+
+        Player blue =
+                new Player(
+                        "Blue",
+                        25,
+                        1,
+                        false,
+                        bluePath
+                );
+
+        return List.of(
+                red,
+                blue
+        );
+    }
+
+
 }
 
 

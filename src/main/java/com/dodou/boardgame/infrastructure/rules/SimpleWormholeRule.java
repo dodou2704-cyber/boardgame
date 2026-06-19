@@ -1,17 +1,17 @@
 package com.dodou.boardgame.infrastructure.rules;
 
-import com.dodou.boardgame.domain.model.SnakeOrLadder;
-import com.dodou.boardgame.domain.rules.SnakeOrLadderRule;
+import com.dodou.boardgame.domain.model.Wormhole;
+import com.dodou.boardgame.domain.rules.WormholeRule;
 
 import java.util.List;
 
 
-public class SimpleSnakeOrLadderRule implements SnakeOrLadderRule {
+public class SimpleWormholeRule implements WormholeRule {
 
     @Override
-    public int resolveSnakeOrLadder(int position, List<SnakeOrLadder> wormholes) {
+    public int resolveWormhole(int position, List<Wormhole> wormholes) {
 
-        for (SnakeOrLadder wormhole : wormholes) {
+        for (Wormhole wormhole : wormholes) {
 
             if (position == wormhole.firstPosition()) {
                 return wormhole.secondPosition();

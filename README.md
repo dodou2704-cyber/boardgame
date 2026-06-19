@@ -1,4 +1,4 @@
-# Board Game
+# Board Game 
 
 ---
 
@@ -40,7 +40,7 @@ The project is separated into layers:
 Contains:
 - Player
 - Board
-- SnakeOrLadder
+- Wormhole
 - Rules interfaces
 
 ### infrastructure
